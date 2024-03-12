@@ -147,8 +147,11 @@ int cmd_bugreport(int argc, const char **argv, const char *prefix)
 				      option_output ? option_output : ""));
 	strbuf_complete(&report_path, '/');
 
-	strbuf_addstr(&report_path, "git-bugreport-");
-	strbuf_addftime(&report_path, option_suffix, localtime_r(&now, &tm), 0, 0);
+	strbuf_addstr(&report_path, "git-bugreport");
+	if (option_suffix) {
+		strbuf_addch(&report_path, '-');
+		strbuf_addftime(&report_path, option_suffix, localtime_r(&now, &tm), 0, 0);
+	}
 	strbuf_addstr(&report_path, ".txt");
 
 	switch (safe_create_leading_directories(report_path.buf)) {
